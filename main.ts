@@ -14,9 +14,13 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const joke =
   "Dad's grill has two settings: medium-rare for the steaks and well-done for his jokes.";
 
-// Entry rule: exactly one dad joke, UTF-8, 1–200 chars, single line.
+// Entry rule: exactly one dad joke, UTF-8, 1–200 chars, single line,
+// no leading or trailing whitespace (the grader reads the raw bytes).
 if (joke.length < 1 || joke.length > 200 || joke.includes("\n")) {
   throw new Error(`Joke must be 1–200 chars on one line, got ${joke.length}`);
+}
+if (joke !== joke.trim()) {
+  throw new Error("Joke must not start or end with whitespace");
 }
 
 mkdirSync("/output", { recursive: true });
